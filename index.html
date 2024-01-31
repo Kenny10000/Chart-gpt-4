@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="fontawesome-free-6.4.2-web/css/all.css">
+    <title>Chat gpt</title>
+
+
+    <style>
+
+   ::-webkit-scrollbar{
+    width: 0;
+   }
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ body{
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#main{
+    width: 100vw;
+    max-width: 540px;
+    height: 100vh;
+    box-shadow: inset 0 0 10px 4px #1116;
+}
+h2{
+    text-align: center;
+    font-family: sans-serif;
+    background-color: #1c1c46;
+    color: #fff;
+    padding: 8px;
+    text-shadow: 1px 1px 4px #111;
+    margin-bottom: 8px;
+
+} 
+
+#msg_area{
+    height: 82%;
+    padding: 0 12px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+#bot{
+    width: 50px;
+    height: 50px;
+    background:url(image/WhatsApp\ Image\ 2023-12-07\ at\ 20.53.19_18783f29.jpg);
+    background-size: 100%;
+    border-radius: 50%;
+    margin: 10px;
+}
+
+#robot{
+display: flex;
+align-items: center;
+
+}
+
+h3{
+    font-family: monospace;
+}
+
+#input{
+    height: 7%;
+    min-height: 42px;
+    display: grid;
+    grid-template-columns: 70% 30%;
+    margin: 8px 16px ;
+    border-radius: 32px;
+    background: linear-gradient(#ececee 50%, #1c1f46
+    50%);
+    box-shadow: inset 0 1px 0 #777;
+}
+
+#text{
+    outline: none;
+    font-size: 20px;
+    background-color: #ececee;
+    color: #333;
+    border-radius: 32px 0 32px 32px;
+    padding: 0 16px;
+    border: solid 1px #777;
+    border-right: none;
+}
+
+#send{
+    outline:none;
+    font-size: 20px;
+    color: #eee;
+    background: #1c1f46;
+    border: none;
+    border-radius: 32px;
+    transition-duration:0.2s ;
+}
+#send:active{
+    font-size: 16px;
+}
+
+
+.left, .right{
+    font-size: 18px;
+    font-family: monospace;
+    display: inline-block;
+    width: auto;
+    max-width: 60%;
+    padding: 14px;
+    word-wrap: break-word;
+}
+.left{
+    color: #000;
+    background-color: #b3bfca;
+    border-radius:0 16px 16px 16px;
+}
+.right{
+    color: #fff;
+    background: #1c1f46;
+    border-radius: 16px 16px 0 16px;
+    float: left;
+}
+.msgCon1, .msgCon2{
+    width: 100%;
+    display: inline-block;
+}
+
+    </style>
+</head>
+<body onload="start()">
+    <div id="main">
+        <h2>ChatBot</h2>
+        <div id="msg_area">
+        <div id="robot">
+            <div id="bot"></div>
+            <h3>Aco ChatBot</h3>
+        </div>
+    </div>
+
+    <div id="input">
+        <input type="text" placeholder="New Message" id="text">
+        <button id="send">Send <i class="fa fa-paper-plane"></i></button>
+    </div>
+</div>
+</body>
+
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js" integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+
+
+<script>
+   function start(){
+    let res_msg = document.createElement('div');
+    res_msg.innerHTML = "Hello myself Aco, How can I help you?";
+    res_msg.setAttribute("class", "left");
+  document.getElementById("msg_area").appendChild(res_msg);
+
+   }
+
+
+   document.getElementById('send').addEventListener
+   ("click", async (e) =>
+   {
+    e.preventDefault();
+var req = document.getElementById('text').value ;
+if (req == undefined || req == "") {
+
+}
+else{
+    let res = "";
+
+    await axios.get(`https://api.monkedev.com/fun/chat?msg=${req}`).then(data => {
+        res = JSON.stringify(data.data.response)
+    })
+
+    let msg_req = document.createElement('div');
+    let msg_res = document.createElement('div');
+
+    let Con1 = document.createElement('div');
+    let Con2 = document.createElement('div');
+
+    Con1.setAttribute("class", "msgCon1");
+    Con2.setAttribute("class", "msgCon2");
+
+    msg_req.innerHTML = req ;
+    msg_res.innerHTML = res ;
+
+    msg_req.setAttribute("class", "right");
+    msg_res.setAttribute("class", "left");
+
+    let message = document.getElementById('msg_area');
+
+    message.appendChild(Con1);
+    message.appendChild(Con2);
+
+    Con1.appendChild(msg_req);
+    Con2.appendChild(msg_res);
+
+    document.getElementById('text').value= "";
+
+    function scroll() {
+        var scrolMsg = document.get('msg_area');
+        scrolMsg.scrollTop = scrolMsg.scrolHeight ;
+    }
+    scroll();
+}
+
+   });
+</script>
+
+
+
+</html>
